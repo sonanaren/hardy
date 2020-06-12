@@ -1,11 +1,11 @@
 // app.js
 
-const express = require('express');
-const connectDB = require('./config/db');
-var cors = require('cors');
+const express = require("express");
+const connectDB = require("./config/db");
+var cors = require("cors");
 
 // routes
-const bikes = require('./routes/api/bikes');
+const bikes = require("./routes/api/bikes");
 
 const app = express();
 
@@ -18,12 +18,12 @@ app.use(cors({ origin: true, credentials: true }));
 // Init Middleware
 app.use(express.json({ extended: false }));
 
-app.use('/public', express.static('public'));
+app.use("/public", express.static("public"));
 
-app.get('/', (req, res) => res.send('Hello world!'));
+app.get("/", (req, res) => res.send("Hello world!"));
 
 // use Routes
-app.use('/api/bikes', bikes);
+app.use("/api/bikes", bikes);
 
 const port = process.env.PORT || 8082;
 

@@ -1,33 +1,40 @@
 // models/Bike.js
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const mongoose = require('mongoose');
+const ImageSchema = Schema({
+  image: {
+    type: String,
+  },
+});
 
-const BikeSchema = new mongoose.Schema({
+const BikeSchema = Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   type: {
     type: String,
-    required: true
+    required: true,
   },
   company: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
-    type: String
+    type: String,
   },
   published_date: {
-    type: Date
+    type: Date,
   },
   publisher: {
-    type: String
+    type: String,
   },
   updated_date: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
+  images: [ImageSchema],
 });
 
-module.exports = mongoose.model('Bike', BikeSchema);
+module.exports = mongoose.model("Bike", BikeSchema);
