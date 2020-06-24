@@ -6,6 +6,7 @@ var cors = require("cors");
 
 // routes
 const bikes = require("./routes/api/bikes");
+const cars = require("./routes/api/cars");
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.get("/", (req, res) => res.send("Hello world!"));
 
 // use Routes
 app.use("/api/bikes", bikes);
+app.use("/api/cars", cars);
 
 const port = process.env.PORT || 8082;
 
