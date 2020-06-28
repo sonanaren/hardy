@@ -5,8 +5,8 @@ const router = express.Router();
 const multer = require("multer");
 
 // Load Bike model
-const Bike = require("../../models/Bike");
-const Image = require("../../models/Image");
+const Bike = require("../../models/bike/Bike");
+const Image = require("../../models/utility/Image");
 
 const DIR = "./public/";
 
@@ -65,16 +65,99 @@ router.get("/:id", (req, res) => {
 // @access Public
 router.post("/", upload.single("image"), (req, res) => {
   const url = req.protocol + "://" + req.get("host");
-  const image = new Image({
-    name: req.body.name,
+  console.log(req.file);
+
+  const image = {
     image: url + "/public/" + req.file.filename,
-  });
+  };
 
-  const bike = new Bike(req.body);
+  console.log(req.body);
+  const variant = {
+    code: req.body.code,
+  };
+  const data = {
+    model_code: req.body.model_code,
+    model_name: req.body.model_name,
+    price_ex_shoowroom: req.body.price_ex_shoowroom,
+    description: req.body.description,
+    engine: {
+      cc: req.body.cc,
+      no_of_cylinders: req.body.no_of_cylinders,
+      max_power: req.body.max_power,
+      max_torque: req.body.max_torque,
+      valves_per_cylinder: req.body.valves_per_cylinder,
+      fuel_delivery: req.body.fuel_delivery,
+      cooling_system: req.body.cooling_system,
+      starting_mechanism: req.body.starting_mechanism,
+    },
+    fuel_consumptions: {
+      tank_capacity: req.body.tank_capacity,
+      reserve_fuel_capacity: req.body.reserve_fuel_capacity,
+      mileage: req.body.mileage,
+      riding_range: req.body.riding_range,
+    },
+    transmission: {
+      no_of_gears: req.body.no_of_gears,
+      clutch: req.body.clutch,
+    },
+    dimensions_weight: {
+      kerb_weight: req.body.kerb_weight,
+      length: req.body.length,
+      width: req.body.width,
+      height: req.body.height,
+      wheelbase: req.body.wheelbase,
+      ground_clearance: req.body.ground_clearance,
+      seat_height: req.body.seat_height,
+    },
+    braking: {
+      front_brake_type: req.body.front_brake_type,
+      rear_brake_type: req.body.rear_brake_type,
+      front_disk_drum_size: req.body.front_disk_drum_size,
+      rear_disk_drum_size: req.body.rear_disk_drum_size,
+    },
+    chassis_suspension: {
+      chassis_type: req.body.chassis_type,
+      front_suspension: req.body.front_suspension,
+      rear_suspension: req.body.rear_suspension,
+    },
+    wheel_tyres: {
+      wheel_size: req.body.wheel_size,
+      wheel_type: req.body.wheel_type,
+      front_tyre: req.body.front_tyre,
+      rear_tyre: req.body.rear_tyre,
+    },
+    standard_features: {
+      speedometer: req.body.speedometer,
+      technometer: req.body.technometer,
+      gear_indicator: req.body.gear_indicator,
+      fuel_warning_indicator: req.body.fuel_warning_indicator,
+      fuel_gauge: req.body.fuel_gauge,
+      low_oil_indicator: req.body.low_oil_indicator,
+      low_battery_indicator: req.body.low_battery_indicator,
+      pillion_seat: req.body.pillion_seat,
+      pillion_grabrail: req.body.pillion_grabrail,
+      engine_kill_switch: req.body.engine_kill_switch,
+      clock: req.body.clock,
+      tripmeter_type: req.body.tripmeter_type,
+      tripmeter_count: req.body.tripmeter_count,
+      pass_light: req.body.pass_light,
+    },
+    key_features: {
+      assist_slipper_clutch: req.body.assist_slipper_clutch,
+      usb_charging: req.body.usb_charging,
+      variables_valves_actuation: req.body.variables_valves_actuation,
+      super_wide_tyre: req.body.super_wide_tyre,
+      dual_channel_abs: req.body.dual_channel_abs,
+    },
+  };
 
-  // create a comment
+  const bike = new Bike(data);
+
+  // create a image
   bike.images.push(image);
-
+  // variant
+  bike.variant.push(variant);
+  
   bike
     .save()
     .then((result) => {
