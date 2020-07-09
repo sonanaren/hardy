@@ -1,14 +1,14 @@
 // routes/api/users.js
 
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const multer = require("multer");
+const multer = require('multer');
 
 // Load User model
-const User = require("../../models/user/User");
-const Image = require("../../models/utility/Image");
+const User = require('../../models/user/User');
+const Image = require('../../models/utility/Image');
 
-const DIR = "./public/";
+const DIR = './public/';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -24,14 +24,14 @@ var upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
     if (
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/jpg" ||
-      file.mimetype == "image/jpeg"
+      file.mimetype == 'image/png' ||
+      file.mimetype == 'image/jpg' ||
+      file.mimetype == 'image/jpeg'
     ) {
       cb(null, true);
     } else {
       cb(null, false);
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
+      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
     }
   },
 });
@@ -39,32 +39,32 @@ var upload = multer({
 // @route GET api/users/test
 // @description tests users route
 // @access Public
-router.get("/test", (req, res) => res.send("User route testing!"));
+router.get('/test', (req, res) => res.send('User route testing!'));
 
 // @route GET api/users
 // @description Get all users
 // @access Public
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   User.find()
-    .populate("image")
+    .populate('image')
     .then((users) => res.json(users))
-    .catch((err) => res.status(404).json({ nousersfound: "No users found" }));
+    .catch((err) => res.status(404).json({ nousersfound: 'No users found' }));
 });
 
 // @route GET api/users/:id
 // @description Get single user by id
 // @access Public
-router.get("/:id", (req, res) => {
+router.get('/:id', (req, res) => {
   User.findById(req.params.id)
     .then((user) => res.json(user))
-    .catch((err) => res.status(404).json({ nouserfound: "No user found" }));
+    .catch((err) => res.status(404).json({ nouserfound: 'No user found' }));
 });
 
 // @route POST api/users
 // @description add/save User
 // @access Public
-router.post("/", upload.single("image"), (req, res) => {
-  const url = req.protocol + "://" + req.get("host");
+router.post('/', upload.single('image'), (req, res) => {
+  const url = req.protocol + '://' + req.get('host');
   console.log(req.file);
 
   console.log(req.body);
@@ -92,7 +92,7 @@ router.post("/", upload.single("image"), (req, res) => {
       group: req.body.group,
     },
     images: {
-      image: url + "/public/" + req.file.filename,
+      image: url + '/public/' + req.file.filename,
     },
   };
 
@@ -102,53 +102,53 @@ router.post("/", upload.single("image"), (req, res) => {
     .save()
     .then((result) => {
       res.status(201).json({
-        message: "User registered successfully!",
+        message: 'User registered successfully!',
       });
     })
-    .catch((err) => res.status(400).json({ error: "Unable to add this user" }));
+    .catch((err) => res.status(400).json({ error: 'Unable to add this user' }));
 });
 
 // @route POST /login
 // @description login User
 // @access Public
-router.post("/login", (req, res) => {
+router.post('/login', (req, res) => {
   console.log(req.body);
 
   User.findOne({ username: req.body.username })
     .then((result) => {
       result.comparePassword(req.body.password, function (err, isMatch) {
         if (err) throw err;
-        console.log("Password:", isMatch);
+        console.log('Password:', isMatch);
         if (isMatch) {
           res.status(201).json({
             user: result._id,
           });
         } else {
-          res.status(201).json({ error: "login failed." });
+          res.status(201).json({ error: 'login failed.' });
         }
       });
     })
-    .catch((err) => res.status(400).json({ error: "login failed." }));
+    .catch((err) => res.status(400).json({ error: 'login failed.' }));
 });
 
 // @route GET api/users/:id
 // @description Update User
 // @access Public
-router.put("/:id", (req, res) => {
+router.put('/:id', (req, res) => {
   User.findByIdAndUpdate(req.params.id, req.body)
-    .then((user) => res.json({ msg: "Updated successfully" }))
+    .then((user) => res.json({ msg: 'Updated successfully' }))
     .catch((err) =>
-      res.status(400).json({ error: "Unable to update the Database" })
+      res.status(400).json({ error: 'Unable to update the Database' })
     );
 });
 
 // @route GET api/users/:id
 // @description Delete user by id
 // @access Public
-router.delete("/:id", (req, res) => {
+router.delete('/:id', (req, res) => {
   User.findByIdAndRemove(req.params.id, req.body)
-    .then((user) => res.json({ mgs: "User entry deleted successfully" }))
-    .catch((err) => res.status(404).json({ error: "No such a user" }));
+    .then((user) => res.json({ mgs: 'User entry deleted successfully' }))
+    .catch((err) => res.status(404).json({ error: 'No such a user' }));
 });
 
 module.exports = router;

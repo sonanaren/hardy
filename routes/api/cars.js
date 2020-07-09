@@ -1,14 +1,14 @@
 // routes/api/cars.js
 
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const multer = require("multer");
+const multer = require('multer');
 
 // Load Car model
-const Car = require("../../models/car/Car");
-const Image = require("../../models/utility/Image");
+const Car = require('../../models/car/Car');
+const Image = require('../../models/utility/Image');
 
-const DIR = "./public/";
+const DIR = './public/';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -24,14 +24,14 @@ var upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
     if (
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/jpg" ||
-      file.mimetype == "image/jpeg"
+      file.mimetype == 'image/png' ||
+      file.mimetype == 'image/jpg' ||
+      file.mimetype == 'image/jpeg'
     ) {
       cb(null, true);
     } else {
       cb(null, false);
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
+      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
     }
   },
 });
@@ -39,36 +39,36 @@ var upload = multer({
 // @route GET api/cars/test
 // @description tests cars route
 // @access Public
-router.get("/test", (req, res) => res.send("Car route testing!"));
+router.get('/test', (req, res) => res.send('Car route testing!'));
 
 // @route GET api/cars
 // @description Get all cars
 // @access Public
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   Car.find()
-    .populate("image")
+    .populate('image')
     .then((cars) => res.json(cars))
-    .catch((err) => res.status(404).json({ nocarsfound: "No cars found" }));
+    .catch((err) => res.status(404).json({ nocarsfound: 'No cars found' }));
 });
 
 // @route GET api/cars/:id
 // @description Get single car by id
 // @access Public
-router.get("/:id", (req, res) => {
+router.get('/:id', (req, res) => {
   Car.findById(req.params.id)
     .then((car) => res.json(car))
-    .catch((err) => res.status(404).json({ nocarfound: "No car found" }));
+    .catch((err) => res.status(404).json({ nocarfound: 'No car found' }));
 });
 
 // @route POST api/cars
 // @description add/save Car
 // @access Public
-router.post("/", upload.single("image"), (req, res) => {
-  const url = req.protocol + "://" + req.get("host");
+router.post('/', upload.single('image'), (req, res) => {
+  const url = req.protocol + '://' + req.get('host');
   console.log(req.file);
 
   const image = {
-    image: url + "/public/" + req.file.filename,
+    image: url + '/public/' + req.file.filename,
   };
 
   console.log(req.body);
@@ -189,30 +189,30 @@ router.post("/", upload.single("image"), (req, res) => {
     .save()
     .then((result) => {
       res.status(201).json({
-        message: "Car registered successfully!",
+        message: 'Car registered successfully!',
       });
     })
-    .catch((err) => res.status(400).json({ error: "Unable to add this car" }));
+    .catch((err) => res.status(400).json({ error: 'Unable to add this car' }));
 });
 
 // @route GET api/cars/:id
 // @description Update Car
 // @access Public
-router.put("/:id", (req, res) => {
+router.put('/:id', (req, res) => {
   Car.findByIdAndUpdate(req.params.id, req.body)
-    .then((car) => res.json({ msg: "Updated successfully" }))
+    .then((car) => res.json({ msg: 'Updated successfully' }))
     .catch((err) =>
-      res.status(400).json({ error: "Unable to update the Database" })
+      res.status(400).json({ error: 'Unable to update the Database' })
     );
 });
 
 // @route GET api/cars/:id
 // @description Delete car by id
 // @access Public
-router.delete("/:id", (req, res) => {
+router.delete('/:id', (req, res) => {
   Car.findByIdAndRemove(req.params.id, req.body)
-    .then((car) => res.json({ mgs: "Car entry deleted successfully" }))
-    .catch((err) => res.status(404).json({ error: "No such a car" }));
+    .then((car) => res.json({ mgs: 'Car entry deleted successfully' }))
+    .catch((err) => res.status(404).json({ error: 'No such a car' }));
 });
 
 module.exports = router;

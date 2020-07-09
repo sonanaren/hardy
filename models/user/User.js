@@ -1,11 +1,11 @@
-const mongoose = require("mongoose"),
+const mongoose = require('mongoose'),
   Schema = mongoose.Schema,
-  bcrypt = require("bcrypt"),
+  bcrypt = require('bcrypt'),
   SALT_WORK_FACTOR = 10;
-const ContactSchema = require("./Contact");
-const AddressSchema = require("./Address");
-const AccessSchema = require("./Access");
-const ImageSchema = require("../utility/Image");
+const ContactSchema = require('./Contact');
+const AddressSchema = require('./Address');
+const AccessSchema = require('./Access');
+const ImageSchema = require('../utility/Image');
 
 const UserSchema = Schema({
   first_name: { type: String, required: true },
@@ -18,11 +18,11 @@ const UserSchema = Schema({
   images: ImageSchema,
 });
 
-UserSchema.pre("save", function (next) {
+UserSchema.pre('save', function (next) {
   var user = this;
 
   // only hash the password if it has been modified (or is new)
-  if (!user.isModified("password")) return next();
+  if (!user.isModified('password')) return next();
 
   // generate a salt
   bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
@@ -46,4 +46,4 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
   });
 };
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model('User', UserSchema);

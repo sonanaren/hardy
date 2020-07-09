@@ -1,14 +1,14 @@
 // routes/api/bikes.js
 
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const multer = require("multer");
+const multer = require('multer');
 
 // Load Bike model
-const Bike = require("../../models/bike/Bike");
-const Image = require("../../models/utility/Image");
+const Bike = require('../../models/bike/Bike');
+const Image = require('../../models/utility/Image');
 
-const DIR = "./public/";
+const DIR = './public/';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -24,14 +24,14 @@ var upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
     if (
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/jpg" ||
-      file.mimetype == "image/jpeg"
+      file.mimetype == 'image/png' ||
+      file.mimetype == 'image/jpg' ||
+      file.mimetype == 'image/jpeg'
     ) {
       cb(null, true);
     } else {
       cb(null, false);
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
+      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
     }
   },
 });
@@ -39,36 +39,36 @@ var upload = multer({
 // @route GET api/bikes/test
 // @description tests bikes route
 // @access Public
-router.get("/test", (req, res) => res.send("Bike route testing!"));
+router.get('/test', (req, res) => res.send('Bike route testing!'));
 
 // @route GET api/bikes
 // @description Get all bikes
 // @access Public
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   Bike.find()
-    .populate("image")
+    .populate('image')
     .then((bikes) => res.json(bikes))
-    .catch((err) => res.status(404).json({ nobikesfound: "No bikes found" }));
+    .catch((err) => res.status(404).json({ nobikesfound: 'No bikes found' }));
 });
 
 // @route GET api/bikes/:id
 // @description Get single bike by id
 // @access Public
-router.get("/:id", (req, res) => {
+router.get('/:id', (req, res) => {
   Bike.findById(req.params.id)
     .then((bike) => res.json(bike))
-    .catch((err) => res.status(404).json({ nobikefound: "No bike found" }));
+    .catch((err) => res.status(404).json({ nobikefound: 'No bike found' }));
 });
 
 // @route POST api/bikes
 // @description add/save Bike
 // @access Public
-router.post("/", upload.single("image"), (req, res) => {
-  const url = req.protocol + "://" + req.get("host");
+router.post('/', upload.single('image'), (req, res) => {
+  const url = req.protocol + '://' + req.get('host');
   console.log(req.file);
 
   const image = {
-    image: url + "/public/" + req.file.filename,
+    image: url + '/public/' + req.file.filename,
   };
 
   console.log(req.body);
@@ -157,35 +157,35 @@ router.post("/", upload.single("image"), (req, res) => {
   bike.images.push(image);
   // variant
   bike.variant.push(variant);
-  
+
   bike
     .save()
     .then((result) => {
       res.status(201).json({
-        message: "Bike registered successfully!",
+        message: 'Bike registered successfully!',
       });
     })
-    .catch((err) => res.status(400).json({ error: "Unable to add this bike" }));
+    .catch((err) => res.status(400).json({ error: 'Unable to add this bike' }));
 });
 
 // @route GET api/bikes/:id
 // @description Update Bike
 // @access Public
-router.put("/:id", (req, res) => {
+router.put('/:id', (req, res) => {
   Bike.findByIdAndUpdate(req.params.id, req.body)
-    .then((bike) => res.json({ msg: "Updated successfully" }))
+    .then((bike) => res.json({ msg: 'Updated successfully' }))
     .catch((err) =>
-      res.status(400).json({ error: "Unable to update the Database" })
+      res.status(400).json({ error: 'Unable to update the Database' })
     );
 });
 
 // @route GET api/bikes/:id
 // @description Delete bike by id
 // @access Public
-router.delete("/:id", (req, res) => {
+router.delete('/:id', (req, res) => {
   Bike.findByIdAndRemove(req.params.id, req.body)
-    .then((bike) => res.json({ mgs: "Bike entry deleted successfully" }))
-    .catch((err) => res.status(404).json({ error: "No such a bike" }));
+    .then((bike) => res.json({ mgs: 'Bike entry deleted successfully' }))
+    .catch((err) => res.status(404).json({ error: 'No such a bike' }));
 });
 
 module.exports = router;

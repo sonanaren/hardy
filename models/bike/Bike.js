@@ -1,17 +1,17 @@
 // models/Bike.js
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const ImageSchema = require("../utility/Image");
-const EngineSchema = require("../bike/Engine");
-const FuelSchema = require("../bike/Fuel");
-const TransmissionSchema = require("../bike/Transmission");
-const DimensionsSchema = require("../bike/Dimensions");
-const BrakingSchema = require("../bike/Braking");
-const VariantSchema = require("../bike/Variant");
-const SuspensionSchema = require("../bike/Suspension");
-const WheelSchema = require("../bike/Wheel");
-const StandardFeaturesSchema = require("../bike/Standard_Features");
-const KeyFeaturesSchema = require("../bike/Key_Features");
+const ImageSchema = require('../utility/Image');
+const EngineSchema = require('../bike/Engine');
+const FuelSchema = require('../bike/Fuel');
+const TransmissionSchema = require('../bike/Transmission');
+const DimensionsSchema = require('../bike/Dimensions');
+const BrakingSchema = require('../bike/Braking');
+const VariantSchema = require('../bike/Variant');
+const SuspensionSchema = require('../bike/Suspension');
+const WheelSchema = require('../bike/Wheel');
+const StandardFeaturesSchema = require('../bike/Standard_Features');
+const KeyFeaturesSchema = require('../bike/Key_Features');
 
 const BikeSchema = Schema({
   model_code: {
@@ -52,4 +52,4 @@ const BikeSchema = Schema({
   images: [ImageSchema],
 });
 
-module.exports = mongoose.model("Bike", BikeSchema);
+module.exports = mongoose.model('Bike', BikeSchema);
